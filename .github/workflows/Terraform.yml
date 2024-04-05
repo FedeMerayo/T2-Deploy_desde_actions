@@ -30,10 +30,9 @@ jobs:
     - name: Get Instance IP
       id: get_ip
       run: |
-        instance_ip="${terraform output instance_ip}"
-        echo "instance_ip=$instance_ip" >> "$GITHUB_OUTPUT"
-
-
+        instance_ip="$(terraform output instance_ip)"      
+        echo "::set-output name=instance_ip::$instance_ip"
+        
     - name: Install Packages
       uses: appleboy/ssh-action@master
       with:
