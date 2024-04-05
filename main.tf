@@ -15,7 +15,7 @@ resource "aws_instance" "Pagos_dev_instance" {
     instance_type = "t2.micro" # Tipo de instancia
     key_name = "vockey" # Nombre de tu key pair existente en AWS
     
-        vpc_security_group_ids = sg-07706ea6df27db7b9
+        vpc_security_group_ids = "sg-07706ea6df27db7b9"
         tags = {
     Name = "ORG-PAGOS-DEV" #Reemplazar por el nombre correcto
     }
