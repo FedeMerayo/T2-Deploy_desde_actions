@@ -28,10 +28,11 @@ jobs:
     - name: Terraform Apply      
       run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
 
-         
+    - name: Save Host Address1
+      run: terraform output instance_ip
         
     - name: Save Host Address2
-      run: echo IP_ADDRESS = $(terraform output instance_ip) >> "$GITHUB_ENV"
+      run: echo "{IP_ADDRESS} = {$(terraform output instance_ip)} >> "$GITHUB_ENV"
 
 
     - name: Install Packages
