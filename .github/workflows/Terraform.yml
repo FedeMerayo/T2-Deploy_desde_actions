@@ -7,7 +7,7 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+  instance_ip: ${{ steps.get_ip.outputs.instance_ip }}
 
 jobs:
   terraform:
@@ -29,9 +29,10 @@ jobs:
       run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
 
     - name: Get Instance IP
+      id: get_ip
       run: |
         instance_ip=$(terraform output instance_ip | tr -d '"')
-        echo "instance_ip=$instance_ip"
+        echo "instance_ip=$instance_ip" >> $GITHUB_ENV
 
 
     - name: Install Packages
