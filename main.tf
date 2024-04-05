@@ -9,7 +9,7 @@ provider "aws" {
     }
 
 resource "aws_security_group" "instance_security_group" {
-name = "instance_security_group8"
+name = "instance_security_group9"
 description = "Security group for EC2 instance"
     
 ingress {
