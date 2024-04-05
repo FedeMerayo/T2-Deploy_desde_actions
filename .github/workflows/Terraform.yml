@@ -29,7 +29,7 @@ jobs:
       run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}" -state=output.tfstate
 
     - name: Save Host Address
-      run: IP_ADDRESS=$(terraform output instance_ip))
+      run: IP_ADDRESS=$(terraform output instance_ip)
 
     - name: Install Packages
       uses: appleboy/ssh-action@master
