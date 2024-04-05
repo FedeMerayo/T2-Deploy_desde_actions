@@ -29,7 +29,9 @@ jobs:
       run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}" -state=output.tfstate
 
     - name: Save Host Address
-      run: terraform output -raw instance_ip
+      run: terraform refresh
+          terraform show
+          terraform output -raw instance_ip
         
 
     - name: Install Packages
