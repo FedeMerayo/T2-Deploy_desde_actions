@@ -3,7 +3,7 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
 provider "aws" {
-    region = "us-east-2" # Cambia esto a la regi¾n deseada
+    region = "us-east-1" # Cambia esto a la regi¾n deseada
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
     }
@@ -57,7 +57,7 @@ cidr_blocks = ["0.0.0.0/0"]
 }
     
 resource "aws_instance" "Pagos_dev_instance" {
-    ami = "ami-019f9b3318b7155c5" # AMI de Amazon Linux
+    ami = "ami-051f8a213df8bc089" # AMI de Amazon Linux
     instance_type = "t2.micro" # Tipo de instancia
     key_name = "vockey" # Nombre de tu key pair existente en AWS
     
