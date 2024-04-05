@@ -31,7 +31,7 @@ jobs:
     - name: Get Instance IP
       run: |
         instance_ip=$(terraform output instance_ip | tr -d '"')
-        echo "instance_ip=$instance_ip" >> "$GITHUB_ENV"
+        echo "instance_ip=$instance_ip" >> $GITHUB_ENV
 
 
     - name: Install Packages
