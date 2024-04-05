@@ -32,6 +32,10 @@ jobs:
       run: |
         instance_ip="$(terraform output instance_ip)"      
         echo "::set-output name=instance_ip::$instance_ip"
+
+    - name: mostrar ip
+      run: |
+        echo ${{ steps.get_ip.outputs.instance_ip }}
         
     - name: Install Packages
       uses: appleboy/ssh-action@master
