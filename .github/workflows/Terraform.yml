@@ -31,8 +31,12 @@ jobs:
     - name: Save Host Address1
       run: terraform output instance_ip
         
-    - name: Save Host Address2
-      run: echo "{IP_ADDRESS} = {$(terraform output instance_ip)} >> "$GITHUB_ENV"
+    - name: GET_IP_ADDRESS
+      run: echo "IP_ADDRESS = (terraform output instance_ip) >> "$GITHUB_OUTPUT"
+
+      env:
+       IP_ADDRESS: ${{steps.GET_IP_ADDDRESS.outputs.IP_ADDRESS}}
+    
 
 
     - name: Install Packages
