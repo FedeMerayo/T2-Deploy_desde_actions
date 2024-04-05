@@ -30,10 +30,13 @@ jobs:
 
     - name: Save Host Address
       run: terraform refresh
-          terraform show
-          terraform output -raw instance_ip
+          
         
+    - name: Save Host Address2
+      run: terraform show  
 
+    - name: Save Host Address3
+      run:  terraform output -raw instance_ip  
     - name: Install Packages
       uses: appleboy/ssh-action@master
       with:
