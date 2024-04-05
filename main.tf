@@ -8,53 +8,7 @@ provider "aws" {
   secret_key = var.aws_secret_key
     }
 
-resource "aws_security_group" "instance_security_group" {
-name = "instance_security_group11"
-description = "Security group for EC2 instance"
-    
-ingress {
-from_port = 22
-to_port = 22
-protocol = "tcp"
-cidr_blocks = ["0.0.0.0/0"]
-}
 
-ingress {
-from_port = 443
-to_port = 443
-protocol = "tcp"
-cidr_blocks = ["0.0.0.0/0"]
-}
-
-ingress {
-from_port = 3000
-to_port = 3000
-protocol = "tcp"
-cidr_blocks = ["0.0.0.0/0"]
-}
-
-egress {
-from_port = 22
-to_port = 22
-protocol = "tcp"
-cidr_blocks = ["0.0.0.0/0"]
-}
-
-egress {
-from_port = 443
-to_port = 443
-protocol = "tcp"
-cidr_blocks = ["0.0.0.0/0"]
-}
-
-egress {
-from_port = 3000
-to_port = 3000
-protocol = "tcp"
-cidr_blocks = ["0.0.0.0/0"]
-}
-
-}
     
 resource "aws_instance" "Pagos_dev_instance" {
     ami = "ami-0900fe555666598a2" # AMI de Amazon Linux
