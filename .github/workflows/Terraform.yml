@@ -7,7 +7,6 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  instance_ip: ${{ steps.get_ip.outputs.instance_ip }}
 
 jobs:
   terraform:
@@ -32,13 +31,13 @@ jobs:
       id: get_ip
       run: |
         instance_ip=$(terraform output instance_ip | tr -d '"')
-        echo "instance_ip=$instance_ip" >> $GITHUB_ENV
+        echo "instance_ip=$instance_ip" >> $GITHUB_OUTPUT
 
 
     - name: Install Packages
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ env.instance_ip }}
+        host: ${{ steps.get_ip.outputs.instance_ip }}
         username: ec2-user
         key: ${{ secrets.PEM_EC2_PAGOS }}
         script: |
