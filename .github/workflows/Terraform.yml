@@ -29,12 +29,12 @@ jobs:
       run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}" -state=output.tfstate
 
     - name: Save Host Address
-      run: IP_ADDRESS=$(terraform output instance_ip)
+      run: echo "IP_ADDRESS=$(terraform output instance_ip)" >> $GITHUB_ENV
 
     - name: Install Packages
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ env.IP_ADDRESS }}
+        host: ${{ env.IP_ADDRESS}}
         username: ec2-user
         key: ${{ secrets.PEM_EC2_PAGOS }}
         script: |
