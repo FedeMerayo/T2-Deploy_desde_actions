@@ -17,9 +17,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+      uses: hashicorp/setup-terraform@v2
       with:
         terraform_version: 1.7.5
+        terraform_wrapper: false
 
     - name: Terraform Init
       run: terraform init
@@ -27,20 +28,15 @@ jobs:
     - name: Terraform Apply      
       run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
 
-    - name: Get Instance IP
-      id: get_ip
-      run: |
-        instance_ip="$(terraform output instance_ip)"      
-        echo "::set-output name=instance_ip::$instance_ip"
+    - name: Export Output
+      id: tfo
+      run: | 
+         echo "instance_ip=$(terraform output -raw instance_ip)" >> $GITHUB_OUTPUT
 
-    - name: mostrar ip
-      run: |
-        echo ${{ steps.get_ip.outputs.instance_ip }}
-        
     - name: Install Packages
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ steps.get_ip.outputs.instance_ip }}
+        host: ${{ steps.tfo.outputs.instance_ip }}
         username: ec2-user
         key: ${{ secrets.PEM_EC2_PAGOS }}
         script: |
