@@ -35,9 +35,9 @@ jobs:
 
     - name: Temporizador de 10 segundos
       run: |
-          echo "Iniciando temporizador de 2 minutos..."
-          sleep 10 # 300 segundos = 2 minutos
-          echo "Temporizador de 2 minutos completado. Continuando con las siguientes acciones."
+          echo "Iniciando temporizador de 10 segundos..." 
+          sleep 10 # 
+          echo "Temporizador de 10 segundos completado. Continuando con las siguientes acciones."
 
     - name: Install Packages
       uses: appleboy/ssh-action@master
@@ -82,11 +82,7 @@ jobs:
               sudo npm install -g pm2
               sudo npm install -g npm@10.5.1
 
-    - name: Temporizador de 10 segundos
-      run: |
-          echo "Iniciando temporizador de 2 minutos..."
-          sleep 10 # 300 segundos = 2 minutos
-          echo "Temporizador de 2 minutos completado. Continuando con las siguientes acciones."
+
     
     - name: Start Node Service
       uses: appleboy/ssh-action@master
@@ -96,8 +92,9 @@ jobs:
           key: ${{ secrets.PEM_EC2_PAGOS }}
           script: |
             pm2 kill
+            if ! pm2 list | grep -q 'app'; then
             pm2 start -f /opt/WorkingDirectoryPagos/app.js
-         
+            fi
          
     - name: Check Status
       uses: appleboy/ssh-action@master
@@ -112,11 +109,11 @@ jobs:
             echo "La aplicación no está corriendo."
             fi
 
-    - name: Temporizador de 2 minutos
+    - name: Temporizador de 10 segundos
       run: |
-          echo "Iniciando temporizador de 2 minutos..."
-          sleep 10  # 300 segundos = 2 minutos
-          echo "Temporizador de 2 minutos completado. Continuando con las siguientes acciones."
+          echo "Iniciando temporizador de 10 segundos..." 
+          sleep 10 # 
+          echo "Temporizador de 10 segundos completado. Continuando con las siguientes acciones."
 
     - name: Terraform Destroy
       run: |
