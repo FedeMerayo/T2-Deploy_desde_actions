@@ -68,8 +68,8 @@ jobs:
           username: ec2-user
           key: ${{ secrets.PEM_EC2_PAGOS }}
           script: |
-            sudo git clone https://${{ secrets.PAT}}@github.com/FedeMerayo/DevOps-T2.git /opt/WorkingDirectoryPagos
-            ls
+            sudo git clone https://github.com/FedeMerayo/DevOps-T2.git /opt/WorkingDirectoryPagos
+            
 
     - name: Install NPM Packages
       uses: appleboy/ssh-action@master
