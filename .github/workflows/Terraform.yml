@@ -68,7 +68,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.PEM_EC2_PAGOS }}
           script: |
-            sudo git clone https://github.com/FedeMerayo/DevOps-T2.git /opt/WorkingDirectoryPagos
+            sudo git clone https://${{ secrets.PAT }}@github.com/FedeMerayo/DevOps-T2.git /opt/WorkingDirectoryPagos
             
 
     - name: Install NPM Packages
@@ -89,7 +89,7 @@ jobs:
           key: ${{ secrets.PEM_EC2_PAGOS }}
           script: |
             if ! pm2 list | grep -q 'app'; then
-            pm2 start -f /opt/WorkingDirectoryPagos/DevOps-T2/app.js
+            pm2 start -f /opt/WorkingDirectoryPagos/app.js
             fi
          
     - name: Check Status
