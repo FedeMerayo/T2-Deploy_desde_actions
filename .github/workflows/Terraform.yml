@@ -33,6 +33,12 @@ jobs:
       run: | 
          echo "instance_ip=$(terraform output -raw instance_ip)" >> $GITHUB_OUTPUT
 
+    - name: Temporizador de 30 segundos
+      run: |
+          echo "Iniciando temporizador de 2 minutos..."
+          sleep 30 # 300 segundos = 2 minutos
+          echo "Temporizador de 2 minutos completado. Continuando con las siguientes acciones."
+
     - name: Install Packages
       uses: appleboy/ssh-action@master
       with:
