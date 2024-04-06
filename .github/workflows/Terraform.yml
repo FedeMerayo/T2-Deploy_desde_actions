@@ -1,6 +1,6 @@
 name: Terraform EC2
 
-pm2 kill command and then starting the application again using the pm2 start app.js
+
 on:
   workflow_dispatch:
 
