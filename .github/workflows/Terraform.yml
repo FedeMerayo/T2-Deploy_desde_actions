@@ -33,10 +33,10 @@ jobs:
       run: | 
          echo "instance_ip=$(terraform output -raw instance_ip)" >> $GITHUB_OUTPUT
 
-    - name: Temporizador de 30 segundos
+    - name: Temporizador de 10 segundos
       run: |
           echo "Iniciando temporizador de 2 minutos..."
-          sleep 30 # 300 segundos = 2 minutos
+          sleep 10 # 300 segundos = 2 minutos
           echo "Temporizador de 2 minutos completado. Continuando con las siguientes acciones."
 
     - name: Install Packages
@@ -69,6 +69,7 @@ jobs:
           key: ${{ secrets.PEM_EC2_PAGOS }}
           script: |
             sudo git clone https://${{ secrets.PAT}}@github.com/FedeMerayo/DevOps-T2.git /opt/WorkingDirectoryPagos
+            ls
 
     - name: Install NPM Packages
       uses: appleboy/ssh-action@master
@@ -107,7 +108,7 @@ jobs:
     - name: Temporizador de 2 minutos
       run: |
           echo "Iniciando temporizador de 2 minutos..."
-          sleep 120  # 300 segundos = 2 minutos
+          sleep 10  # 300 segundos = 2 minutos
           echo "Temporizador de 2 minutos completado. Continuando con las siguientes acciones."
 
     - name: Terraform Destroy
