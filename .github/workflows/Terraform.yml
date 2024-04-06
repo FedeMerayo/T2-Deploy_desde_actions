@@ -80,6 +80,7 @@ jobs:
           script: |
               sudo npm install express
               sudo npm install -g pm2
+              sudo npm install -g npm@10.5.1
       
     - name: Start Node Service
       uses: appleboy/ssh-action@master
