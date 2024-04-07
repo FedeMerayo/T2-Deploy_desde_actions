@@ -71,7 +71,7 @@ resource "aws_instance" "Pagos_dev_instance" {
   value = aws_instance.Pagos_dev_instance.public_ip
 }
 
-resource "aws_s3_bucket" "repositorio_estadostf_pagos_dev_instance" {
+resource "aws_s3_bucket" "repositorio-estadostf-pagos-dev-instance" {
   bucket = "repositorio-estadostf-pagos-dev-instance"
   acl    = "private"
 
@@ -85,7 +85,7 @@ resource "aws_s3_bucket" "repositorio_estadostf_pagos_dev_instance" {
   }
 }
 
-resource "aws_s3_bucket_versioning" "repositorio_estadostf_pagos_dev_instance_versioning" {
+resource "aws_s3_bucket_versioning" "repositorio-estadostf-pagos-dev-instance_versioning" {
   bucket = aws_s3_bucket.repositorio-estadostf-pagos-dev-instance.id
   versioning_configuration {
     status = "Enabled"
