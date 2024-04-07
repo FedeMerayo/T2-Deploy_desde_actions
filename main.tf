@@ -71,8 +71,8 @@ resource "aws_instance" "Pagos_dev_instance" {
   value = aws_instance.Pagos_dev_instance.public_ip
 }
 
-resource "aws_s3_bucket" "Repositorio_estadostf_Pagos_dev_instance" {
-  bucket = "Repositorio_estadostf_dev_instance"
+resource "aws_s3_bucket" "repositorio_estadostf_pagos_dev_instance" {
+  bucket = "repositorio_estadostf_pagos_dev_instance"
   acl    = "private"
 
   versioning {
