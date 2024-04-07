@@ -75,17 +75,13 @@ resource "aws_s3_bucket" "repositorio-estadostf-pagos-dev-instance" {
   bucket = "repositorio-estadostf-pagos-dev-instance"
   acl    = "private"
 
-  versioning {
-    enabled = true
-  }
-
   tags = {
     Name        = "fedem_Repositorio_estadostf"
     Environment = "Pagos_dev_instance"
   }
 }
 
-resource "aws_s3_bucket_versioning" "repositorio-estadostf-pagos-dev-instance_versioning" {
+resource "aws_s3_bucket_versioning" "repositorio-estadostf-pagos-dev-instance-versioning" {
   bucket = aws_s3_bucket.repositorio-estadostf-pagos-dev-instance.id
   versioning_configuration {
     status = "Enabled"
