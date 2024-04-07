@@ -71,3 +71,17 @@ resource "aws_instance" "Pagos_dev_instance" {
   value = aws_instance.Pagos_dev_instance.public_ip
 }
 
+resource "aws_s3_bucket" "Repositorio_estadostf_Pagos_dev_instance" {
+  bucket = "Repositorio_estadostf_dev_instance"
+  acl    = "private"
+
+  versioning {
+    enabled = true
+  }
+
+  tags = {
+    Name        = "fedem_Repositorio_estadostf"
+    Environment = "Pagos_dev_instance"
+  }
+}
+
