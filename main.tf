@@ -9,7 +9,7 @@ provider "aws" {
     }
 
 resource "aws_security_group" "instance_security_group" {
-name = "instance_security_group4"
+name = "instance_security_group"
 description = "Security group for EC2 instance"
     
 ingress {
@@ -72,7 +72,7 @@ resource "aws_instance" "Pagos_dev_instance" {
 }
 
 resource "aws_s3_bucket" "repositorio_estadostf_pagos_dev_instance" {
-  bucket = "repositorio_estadostf_pagos_dev_instance"
+  bucket = "repositorio-estadostf-pagos-dev-instance"
   acl    = "private"
 
   versioning {
@@ -82,6 +82,13 @@ resource "aws_s3_bucket" "repositorio_estadostf_pagos_dev_instance" {
   tags = {
     Name        = "fedem_Repositorio_estadostf"
     Environment = "Pagos_dev_instance"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "repositorio_estadostf_pagos_dev_instance_versioning" {
+  bucket = aws_s3_bucket.repositorio-estadostf-pagos-dev-instance.id
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
