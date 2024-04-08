@@ -28,12 +28,15 @@ jobs:
     - name: Terraform Apply      
       run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
 
+    - name: Terraform Show      
+      run: terraform show
+
     - name: Export Output
       id: tfo
       run: | 
          echo "instance_ip=$(terraform output -raw instance_ip)" >> $GITHUB_OUTPUT
 
-    - name: Temporizador de 10 segundos
+    - name: Temporizador de 10 segundos para que se termine de lanzar la EC2
       run: |
           echo "Iniciando temporizador de 10 segundos..." 
           sleep 10 # 
@@ -82,7 +85,6 @@ jobs:
               sudo npm install -g pm2
               sudo npm install -g npm@10.5.1
 
-
     
     - name: Start Node Service
       uses: appleboy/ssh-action@master
@@ -109,10 +111,10 @@ jobs:
             echo "La aplicación no está corriendo."
             fi
 
-    - name: Temporizador de 10 segundos
+    - name: Temporizador para acceder a la IP desde navegador
       run: |
-          echo "Iniciando temporizador de 10 segundos..." 
-          sleep 10 # 
+          echo "Iniciando temporizador de 60 segundos..." 
+          sleep 60 # 
           echo "Temporizador de 10 segundos completado. Continuando con las siguientes acciones."
 
     - name: Terraform Destroy
