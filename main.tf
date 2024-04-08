@@ -77,28 +77,5 @@ resource "aws_instance" "Pagos_dev_instance" {
   value = aws_instance.Pagos_dev_instance.public_ip
 }
 
-resource "aws_s3_bucket" "repositorio-estadostf-pagos-dev-instance" {
-  bucket = "repositorio-estadostf-pagos-dev-instance"
-  acl    = "private"
 
-  tags = {
-    Name        = "fedem_Repositorio_estadostf"
-    Environment = "Pagos_dev_instance"
-  }
-}
-
-resource "aws_s3_bucket_versioning" "repositorio-estadostf-pagos-dev-instance-versioning" {
-  bucket = aws_s3_bucket.repositorio-estadostf-pagos-dev-instance.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-terraform {
-  backend "s3" {
-    bucket = "repositorio-estadostf-pagos-dev-instance"
-    key    = "tfstates/terraform.tfstate"
-    region = "us-east-2"
-  }
-}
 
