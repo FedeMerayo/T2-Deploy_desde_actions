@@ -114,7 +114,7 @@ jobs:
     - name: Temporizador para acceder a la IP desde navegador
       run: |
           echo "Iniciando temporizador de 60 segundos..." 
-          sleep 60 # 
+          sleep 90 # 
           echo "Temporizador de 10 segundos completado. Continuando con las siguientes acciones."
 
     - name: Terraform Destroy
