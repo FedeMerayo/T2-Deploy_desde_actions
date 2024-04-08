@@ -1,4 +1,3 @@
-
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
@@ -92,6 +91,14 @@ resource "aws_s3_bucket_versioning" "repositorio-estadostf-pagos-dev-instance-ve
   bucket = aws_s3_bucket.repositorio-estadostf-pagos-dev-instance.id
   versioning_configuration {
     status = "Enabled"
+  }
+}
+
+terraform {
+  backend "s3" {
+    bucket = "repositorio-estadostf-pagos-dev-instance"
+    key    = "tfstates/terraform.tfstate"
+    region = "us-east-2"
   }
 }
 
