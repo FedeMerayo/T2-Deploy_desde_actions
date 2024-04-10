@@ -34,7 +34,7 @@ jobs:
     - name: Export Output
       id: tfo
       run: | 
-         echo "instance_ip=$(terraform output -raw instance_ip)" >> $GITHUB_OUTPUT
+         echo "instance_ip=$(terraform output -raw instance_ip_Pagos_dev)" >> $GITHUB_OUTPUT
 
     - name: Temporizador de 10 segundos para que se termine de lanzar la EC2
       run: |
