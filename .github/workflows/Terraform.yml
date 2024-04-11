@@ -34,7 +34,7 @@ jobs:
     - name: Export Output
       id: tfo
       run: | 
-         echo "instance_ip=$(terraform output -raw instance_ip_Pagos_dev)" >> $GITHUB_OUTPUT
+         echo "instance_ip=$(terraform output -raw instance_ip_Pagos_qa)" >> $GITHUB_OUTPUT
 
     - name: Temporizador de 10 segundos para que se termine de lanzar la EC2
       run: |
@@ -42,74 +42,15 @@ jobs:
           sleep 10 # 
           echo "Temporizador de 10 segundos completado. Continuando con las siguientes acciones."
 
-    - name: Install Packages
+    - name: Install Docker y Login
       uses: appleboy/ssh-action@master
       with:
         host: ${{ steps.tfo.outputs.instance_ip }}
         username: ec2-user
         key: ${{ secrets.PEM_EC2_PAGOS }}
         script: |
-            sudo yum install -y nodejs npm git
-        
-    - name: Create Working Directory
-      uses: appleboy/ssh-action@master
-      with:
-          host: ${{ steps.tfo.outputs.instance_ip}}
-          username: ec2-user
-          key: ${{ secrets.PEM_EC2_PAGOS }}
-          script: |
-              if [ -d "/opt/WorkingDirectoryPagos" ]; then
-              sudo rm -rf /opt/WorkingDirectoryPagos
-              fi
-              sudo mkdir /opt/WorkingDirectoryPagos
-              cd /opt/WorkingDirectoryPagos
-      
-    - name: Clone Repository T2-Devops
-      uses: appleboy/ssh-action@master
-      with:
-          host: ${{ steps.tfo.outputs.instance_ip }}
-          username: ec2-user
-          key: ${{ secrets.PEM_EC2_PAGOS }}
-          script: |
-            sudo git clone https://${{ secrets.PAT }}@github.com/FedeMerayo/DevOps-T2.git /opt/WorkingDirectoryPagos
-            
-
-    - name: Install NPM Packages
-      uses: appleboy/ssh-action@master
-      with:
-          host: ${{ steps.tfo.outputs.instance_ip }}
-          username: ec2-user
-          key: ${{ secrets.PEM_EC2_PAGOS }}
-          script: |
-              sudo npm install express
-              sudo npm install -g pm2
-              sudo npm install -g npm@10.5.1
-
-    
-    - name: Start Node Service
-      uses: appleboy/ssh-action@master
-      with:
-          host: ${{steps.tfo.outputs.instance_ip }}
-          username: ec2-user
-          key: ${{ secrets.PEM_EC2_PAGOS }}
-          script: |
-            pm2 kill
-            if ! pm2 list | grep -q 'app'; then
-            pm2 start -f /opt/WorkingDirectoryPagos/app.js
-            fi
-         
-    - name: Check Status
-      uses: appleboy/ssh-action@master
-      with:
-          host: ${{ steps.tfo.outputs.instance_ip }}
-          username: ec2-user
-          key: ${{ secrets.PEM_EC2_PAGOS }}
-          script: |
-            if pm2 list | grep -q 'app'; then
-            echo "La aplicación está corriendo."
-            else
-            echo "La aplicación no está corriendo."
-            fi
+            sudo yum -y install docker
+            echo ${{ secrets.PASSWORD_USER_DOCKER }} | sudo docker login -u fmmerayo@gmail.com --password-stdin 
 
     - name: Temporizador para acceder a la IP desde navegador
       run: |
@@ -119,4 +60,4 @@ jobs:
 
     - name: Terraform Destroy
       run: |
-        terraform destroy -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
+        terraform destroy -auto-approve -var="aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
