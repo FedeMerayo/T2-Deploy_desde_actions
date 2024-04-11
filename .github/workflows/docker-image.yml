@@ -12,4 +12,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag T2-Devops-k6:latest
+      run: docker build . --file Dockerfile --tag t2-devops-k6:latest
