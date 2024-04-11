@@ -1,0 +1,52 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.7.5
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Apply      
+      run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
+
+    - name: Export Output
+      id: tfo
+      run: | 
+         echo "instance_ip=$(terraform output -raw instance_ip_Pagos_qa)" >> $GITHUB_OUTPUT
+    
+    - name: Login to Docker Hub
+      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag fmmerayo/devops-t2:t2-devops-k6   
+    
+    - name: Push the Docker image to Docker Hub
+      run: docker push fmmerayo/devops-t2:t2-devops-k6  
+
+    - name: EC2 - Install Docker
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ steps.tfo.outputs.instance_ip }}
+        username: ec2-user
+        key: ${{ secrets.PEM_EC2_PAGOS }}
+        script: |
+            sudo yum -y install docker
