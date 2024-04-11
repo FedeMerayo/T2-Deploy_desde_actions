@@ -62,7 +62,7 @@ ingress {
 
 }
 
-resource "aws_instance" "Pagos_dev_instance" {
+resource "aws_instance" "Pagos_qa_instance" {
     ami = "ami-0900fe555666598a2" # AMI de Amazon Linux
     instance_type = "t2.micro" # Tipo de instancia
     key_name = "vockey" # Nombre de tu key pair existente en AWS
@@ -73,7 +73,7 @@ resource "aws_instance" "Pagos_dev_instance" {
 
 
     }
-  output "instance_ip_Pagos_dev" {
-  value = aws_instance.Pagos_dev_instance.public_ip
+  output "instance_ip_Pagos_qa" {
+  value = aws_instance.Pagos_qa_instance.public_ip
 }
 
