@@ -1,0 +1,63 @@
+name: Docker EC2
+
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.7.5
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Apply      
+      run: terraform apply -auto-approve -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
+
+    - name: Terraform Show      
+      run: terraform show
+
+    - name: Export Output
+      id: tfo
+      run: | 
+         echo "instance_ip=$(terraform output -raw instance_ip_Pagos_qa)" >> $GITHUB_OUTPUT
+
+    - name: Temporizador de 10 segundos para que se termine de lanzar la EC2
+      run: |
+          echo "Iniciando temporizador de 10 segundos..." 
+          sleep 10 # 
+          echo "Temporizador de 10 segundos completado. Continuando con las siguientes acciones."
+
+    - name: Install Docker y Login
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ steps.tfo.outputs.instance_ip }}
+        username: ec2-user
+        key: ${{ secrets.PEM_EC2_PAGOS }}
+        script: |
+            sudo yum -y install docker
+            echo ${{ secrets.PASSWORD_USER_DOCKER }} | sudo docker login -u fmmerayo@gmail.com --password-stdin 
+
+    - name: Temporizador para acceder a la IP desde navegador
+      run: |
+          echo "Iniciando temporizador de 60 segundos..." 
+          sleep 90 # 
+          echo "Temporizador de 10 segundos completado. Continuando con las siguientes acciones."
+
+    - name: Terraform Destroy
+      run: |
+        terraform destroy -auto-approve -var="aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -var="aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
